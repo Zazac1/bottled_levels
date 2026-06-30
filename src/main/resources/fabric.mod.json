@@ -1,38 +1,35 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
-	"version": "${version}",
-	"name": "Example Mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"id": "revamped_xp_bottle",
+	"version": "1.0.0",
+	"name": "Revamped XP Bottle",
+	"description": "Adds reusable experience bottles that can store up to 30 levels.",
 	"authors": [
-		"Me!"
+		"Zazac1"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/Zazac1",
+		"sources": "https://github.com/Zazac1/RevampedXpBottle"
 	},
 	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"icon": "assets/revamped_xp_bottle/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"com.zazac1.revampedxpbottle.RevampedXpBottleMod"
 		],
 		"client": [
-			"com.example.client.ExampleModClient"
+			"com.zazac1.revampedxpbottle.client.RevampedXpBottleModClient"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
-		{
-			"config": "modid.client.mixins.json",
-			"environment": "client"
-		}
+		"revamped_xp_bottle.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.19.3",
-		"minecraft": "~26.1.2",
+		"minecraft": "~26.2",
 		"java": ">=25",
 		"fabric-api": "*"
 	}
 }
+
