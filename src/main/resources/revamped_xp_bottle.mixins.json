@@ -1,9 +1,9 @@
 {
 	"required": true,
-	"package": "com.example.client.mixin",
+	"package": "com.zazac1.revampedxpbottle.mixin",
 	"compatibilityLevel": "JAVA_25",
-	"client": [
-		"ExampleClientMixin"
+	"mixins": [
+		"ThrownExperienceBottleMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

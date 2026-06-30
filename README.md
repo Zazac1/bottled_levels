@@ -1,9 +1,11 @@
-# Example Mod
+# Revamped XP Bottle
 
-## Setup
+A Fabric mod that adds experience bottles which can store up to 30 levels.
 
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
+## Development
 
-## License
+Build with:
 
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+```powershell
+.\gradlew.bat build
+```
