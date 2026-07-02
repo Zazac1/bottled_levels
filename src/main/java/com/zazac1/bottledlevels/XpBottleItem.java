@@ -45,7 +45,7 @@ public class XpBottleItem extends Item {
     @Override
     public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         if (user instanceof PlayerEntity player && player.isSneaking()) return 72000;
-        // si mustDrink=false on boit quasi instantanément (1 tick suffit)
+        // if mustDrink=false, drinking completes almost instantly (1 tick is enough)
         return ModConfig.INSTANCE.mustDrink ? 32 : 1;
     }
 
@@ -80,7 +80,7 @@ public class XpBottleItem extends Item {
     public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
         if (world.isClient()) return;
         if (!(user instanceof PlayerEntity player)) return;
-        if (!player.isSneaking()) return; // seulement en mode dépôt
+        if (!player.isSneaking()) return; // fill mode only (Shift held)
 
         int usedTicks = getMaxUseTime(stack, user) - remainingUseTicks;
         if (usedTicks % 5 == 0) {
@@ -93,7 +93,7 @@ public class XpBottleItem extends Item {
         int levels = getStoredLevels(stack);
         if (levels >= maxLevels) return;
 
-        // coût basé sur le niveau de la BOUTEILLE (pas du joueur), × nombre de bouteilles dans le stack
+        // cost based on the BOTTLE's current level (not the player's), × number of bottles in the stack
         int xpCostPerBottle = getXpForNextLevel(levels);
         int totalXpCost = xpCostPerBottle * stack.getCount();
         int playerTotalXp = getPlayerTotalXp(player);

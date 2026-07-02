@@ -1,47 +1,47 @@
 Bottled Levels
 ==============
 
-Un mod Fabric pour **Minecraft 1.21.11** qui ajoute une bouteille d'XP rechargeable pouvant stocker jusqu'à 30 niveaux.
+A Fabric mod for **Minecraft 1.21.11** that adds a refillable XP bottle able to store up to 30 levels.
 
 Features
 --------
-- 🧪 Bouteille avec **7 stades visuels** selon le remplissage (0 → 30 niveaux)
-- 📥 **Clic droit maintenu (Shift)** pour remplir la bouteille — draine les points XP niveau par niveau
-- 🍶 **Boire** la bouteille pour récupérer l'XP stockée
-- 📦 Bouteilles du même niveau **stackables**
-- 🔄 Une bouteille vide est rendue dans l'inventaire après utilisation
-- 🎵 Effets sonores au remplissage, à la consommation, et quand la bouteille atteint son maximum
-- 🔨 **Craft** : 4× Lapis Lazuli autour d'une Glass Bottle
-- ⚙️ **Config ModMenu** — mode boisson, niveau max, stackable on/off
+- 🧪 Bottle with **7 visual stages** based on fill level (0 → 30 levels)
+- 📥 **Hold Shift + right-click** to fill the bottle one level at a time
+- 🍶 **Drink** the bottle to retrieve your stored XP
+- 📦 Bottles at the same level are **stackable**
+- 🔄 An empty bottle is returned to your inventory after use
+- 🎵 Sound effects on fill, drink, and when the bottle reaches its maximum
+- 🔨 **Craft** with 4× Lapis Lazuli around a Glass Bottle
+- ⚙️ **ModMenu config** — drink mode, max levels, stackable on/off
 
 Build & Installation
 --------------------
 ```
 .\gradlew.bat build
 ```
-Placer le JAR depuis `build\libs\` dans le dossier `mods` de Fabric.
+Place the JAR from `build\libs\` into your Fabric `mods` folder.
 
-Lancement dev :
+Dev launch:
 ```
 .\gradlew.bat runClient
 ```
 
-Compatibilité
+Compatibility
 -------------
-| Dépendance     | Version        |
-|----------------|----------------|
-| Minecraft      | 1.21.11        |
-| Fabric Loader  | 0.19.3         |
-| Fabric API     | 0.141.4+1.21.11|
-| ModMenu        | 17.0.0 (opt.)  |
+| Dependency     | Version         |
+|----------------|-----------------|
+| Minecraft      | 1.21.11         |
+| Fabric Loader  | 0.19.3          |
+| Fabric API     | 0.141.4+1.21.11 |
+| ModMenu        | 17.0.0 (opt.)   |
 
-Licence & Distribution
+License & Distribution
 ----------------------
-- Code : MIT (voir fichier `LICENSE`)
-- Assets : inclus dans le repository
-- Inclusion dans des modpacks autorisée — merci de créditer **Zazac1**
+- Code: MIT (see `LICENSE` file)
+- Assets: included in the repository
+- Inclusion in modpacks is allowed — please credit **Zazac1**
 
-Liens
+Links
 -----
-- 🐛 Issues : https://github.com/Zazac1/bottled_levels/issues
-- 💻 Source : https://github.com/Zazac1/bottled_levels
+- 🐛 Issues: https://github.com/Zazac1/bottled_levels/issues
+- 💻 Source: https://github.com/Zazac1/bottled_levels
