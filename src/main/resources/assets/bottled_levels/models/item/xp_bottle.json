@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "revamped_xp_bottle:item/xp_bottle_0"
+    "layer0": "bottled_levels:item/xp_bottle_0"
   }
 }

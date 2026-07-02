@@ -1,5 +1,5 @@
-Revamped XP Bottle
-==================
+Bottled Levels
+==============
 
 Description
 -----------
@@ -28,4 +28,4 @@ Inclusion dans des modpacks autorisée. Merci de créditer l'auteur (Zazac1) et 
 
 Contact
 -------
-https://github.com/Zazac1/RevampedXpBottle
+https://github.com/Zazac1/revamped_xp_bottle

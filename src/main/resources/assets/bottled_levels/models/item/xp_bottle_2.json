@@ -1,0 +1,4 @@
+{
+  "parent": "item/generated",
+  "textures": { "layer0": "bottled_levels:item/xp_bottle_2" }
+}

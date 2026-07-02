@@ -1,4 +1,4 @@
-package com.zazac1.revampedxp;
+package com.zazac1.bottledlevels;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,7 +12,7 @@ import java.nio.file.Path;
 
 public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("revamped_xp_bottle.json");
+    private static final Path CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("bottled_levels.json");
 
     public static ModConfig INSTANCE = new ModConfig();
 

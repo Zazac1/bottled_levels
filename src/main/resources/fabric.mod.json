@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "id": "revamped_xp_bottle",
+  "id": "bottled_levels",
   "version": "${version}",
-  "name": "Revamped XP Bottle",
-  "description": "Store up to 30 levels of XP in a bottle.",
+  "name": "Bottled Levels",
+  "description": "Store up to 30 levels of XP in a refillable bottle.",
   "authors": ["Zazac1"],
   "environment": "*",
   "entrypoints": {
-    "main": ["com.zazac1.revampedxp.RevampedXpBottleMod"],
-    "modmenu": ["com.zazac1.revampedxp.client.ModMenuIntegration"]
+    "main": ["com.zazac1.bottledlevels.RevampedXpBottleMod"],
+    "modmenu": ["com.zazac1.bottledlevels.client.ModMenuIntegration"]
   },
   "icon": "icon.png",
   "contact": {

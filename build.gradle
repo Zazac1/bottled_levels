@@ -15,7 +15,7 @@ loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"revamped_xp_bottle" {
+		"bottled_levels" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}

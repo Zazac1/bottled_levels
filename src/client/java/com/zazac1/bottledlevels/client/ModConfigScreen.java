@@ -1,6 +1,6 @@
-package com.zazac1.revampedxp.client;
+package com.zazac1.bottledlevels.client;
 
-import com.zazac1.revampedxp.ModConfig;
+import com.zazac1.bottledlevels.ModConfig;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;

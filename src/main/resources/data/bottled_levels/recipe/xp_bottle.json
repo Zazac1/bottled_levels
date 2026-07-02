@@ -9,5 +9,5 @@
     "#": "minecraft:lapis_lazuli",
     "u": "minecraft:glass_bottle"
   },
-  "result": { "id": "revamped_xp_bottle:xp_bottle" }
+  "result": { "id": "bottled_levels:xp_bottle" }
 }

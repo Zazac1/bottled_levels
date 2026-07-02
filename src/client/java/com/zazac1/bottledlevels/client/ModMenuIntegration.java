@@ -1,4 +1,4 @@
-package com.zazac1.revampedxp.client;
+package com.zazac1.bottledlevels.client;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;

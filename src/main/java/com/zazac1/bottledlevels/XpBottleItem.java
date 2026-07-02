@@ -1,4 +1,4 @@
-package com.zazac1.revampedxp;
+package com.zazac1.bottledlevels;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
