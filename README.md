@@ -1,31 +1,47 @@
 Bottled Levels
 ==============
 
-Description
------------
-Mod Fabric 1.21.11 qui ajoute une bouteille d'XP réutilisable pouvant stocker jusqu'à 30 niveaux (1395 XP).
+Un mod Fabric pour **Minecraft 1.21.11** qui ajoute une bouteille d'XP rechargeable pouvant stocker jusqu'à 30 niveaux.
+
+Features
+--------
+- 🧪 Bouteille avec **7 stades visuels** selon le remplissage (0 → 30 niveaux)
+- 📥 **Clic droit maintenu (Shift)** pour remplir la bouteille — draine les points XP niveau par niveau
+- 🍶 **Boire** la bouteille pour récupérer l'XP stockée
+- 📦 Bouteilles du même niveau **stackables**
+- 🔄 Une bouteille vide est rendue dans l'inventaire après utilisation
+- 🎵 Effets sonores au remplissage, à la consommation, et quand la bouteille atteint son maximum
+- 🔨 **Craft** : 4× Lapis Lazuli autour d'une Glass Bottle
+- ⚙️ **Config ModMenu** — mode boisson, niveau max, stackable on/off
 
 Build & Installation
 --------------------
-- Build: .\gradlew.bat build
-- JAR: build\libs\ (placer le JAR dans le dossier mods de Fabric)
-- Lancement dev client: .\gradlew.bat runClient
+```
+.\gradlew.bat build
+```
+Placer le JAR depuis `build\libs\` dans le dossier `mods` de Fabric.
 
-Version supportée
------------------
-- Minecraft: 1.21.11
-- Loader: 0.19.3
-- Mappings: Yarn 1.21.11+build.6
+Lancement dev :
+```
+.\gradlew.bat runClient
+```
+
+Compatibilité
+-------------
+| Dépendance     | Version        |
+|----------------|----------------|
+| Minecraft      | 1.21.11        |
+| Fabric Loader  | 0.19.3         |
+| Fabric API     | 0.141.4+1.21.11|
+| ModMenu        | 17.0.0 (opt.)  |
 
 Licence & Distribution
 ----------------------
-- Code: MIT (fichier LICENSE)
-- Assets: inclus dans le repository.
+- Code : MIT (voir fichier `LICENSE`)
+- Assets : inclus dans le repository
+- Inclusion dans des modpacks autorisée — merci de créditer **Zazac1**
 
-Redistribution / Modpacks
--------------------------
-Inclusion dans des modpacks autorisée. Merci de créditer l'auteur (Zazac1) et de respecter les guidelines officielles des add-ons Minecraft: https://www.minecraft.net/en-us/addons/
-
-Contact
--------
-https://github.com/Zazac1/revamped_xp_bottle
+Liens
+-----
+- 🐛 Issues : https://github.com/Zazac1/bottled_levels/issues
+- 💻 Source : https://github.com/Zazac1/bottled_levels

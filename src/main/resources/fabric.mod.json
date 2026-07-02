@@ -12,9 +12,9 @@
   },
   "icon": "icon.png",
   "contact": {
-    "homepage": "https://github.com/Zazac1/revamped_xp_bottle",
-    "sources": "https://github.com/Zazac1/revamped_xp_bottle",
-    "issues": "https://github.com/Zazac1/revamped_xp_bottle/issues"
+    "homepage": "https://github.com/Zazac1/bottled_levels",
+    "sources": "https://github.com/Zazac1/bottled_levels",
+    "issues": "https://github.com/Zazac1/bottled_levels/issues"
   },
   "depends": {
     "fabricloader": ">=0.19.3",
