@@ -1,23 +1,26 @@
-﻿Revamped XP Bottle
+Revamped XP Bottle
 ==================
 
 Description
 -----------
-Ajoute des bouteilles d'expérience réutilisables pouvant stocker jusqu'à 30 niveaux.
+Mod Fabric 1.21.11 qui ajoute une bouteille d'XP réutilisable pouvant stocker jusqu'à 30 niveaux (1395 XP).
 
 Build & Installation
 --------------------
 - Build: .\gradlew.bat build
 - JAR: build\libs\ (placer le JAR dans le dossier mods de Fabric)
+- Lancement dev client: .\gradlew.bat runClient
 
-Configuration
--------------
-- Vérifie fabric.mod.json (id, version, authors, contact).
+Version supportée
+-----------------
+- Minecraft: 1.21.11
+- Loader: 0.19.3
+- Mappings: Yarn 1.21.11+build.6
 
 Licence & Distribution
 ----------------------
 - Code: MIT (fichier LICENSE)
-- Assets: CC BY 4.0 (src/main/resources/assets/revamped_xp_bottle/LICENSE-assets.md)
+- Assets: inclus dans le repository.
 
 Redistribution / Modpacks
 -------------------------

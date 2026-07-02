@@ -1,8 +1,3 @@
 {
-  "item.revamped_xp_bottle.xp_bottle": "Bottled Experience",
-  "message.revamped_xp_bottle.not_enough_xp": "Not enough XP.",
-  "message.revamped_xp_bottle.bottle_full": "This bottle is already full (30/30).",
-  "tooltip.revamped_xp_bottle.levels": "%s  %s / %s levels",
-  "key.categories.revamped_xp_bottle": "Revamped XP Bottle",
-  "key.revamped_xp_bottle.fill_bottle": "Fill Experience Bottle"
+  "item.revamped_xp_bottle.xp_bottle": "Experience Bottle"
 }

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " # ",
+    "#u#",
+    " # "
+  ],
+  "key": {
+    "#": "minecraft:lapis_lazuli",
+    "u": "minecraft:glass_bottle"
+  },
+  "result": { "id": "revamped_xp_bottle:xp_bottle" }
+}

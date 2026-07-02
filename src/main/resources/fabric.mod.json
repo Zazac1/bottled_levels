@@ -1,35 +1,25 @@
 {
-	"schemaVersion": 1,
-	"id": "revamped_xp_bottle",
-	"version": "1.0.0",
-	"name": "Revamped XP Bottle",
-	"description": "Adds reusable experience bottles that can store up to 30 levels.",
-	"authors": [
-		"Zazac1"
-	],
-	"contact": {
-		"homepage": "https://github.com/Zazac1",
-		"sources": "https://github.com/Zazac1/RevampedXpBottle"
-	},
-	"license": "CC0-1.0",
-	"icon": "assets/revamped_xp_bottle/icon.png",
-	"environment": "*",
-	"entrypoints": {
-		"main": [
-			"com.zazac1.revampedxpbottle.RevampedXpBottleMod"
-		],
-		"client": [
-			"com.zazac1.revampedxpbottle.client.RevampedXpBottleModClient"
-		]
-	},
-	"mixins": [
-		"revamped_xp_bottle.mixins.json"
-	],
-	"depends": {
-		"fabricloader": ">=0.19.3",
-		"minecraft": "~26.2",
-		"java": ">=25",
-		"fabric-api": "*"
-	}
+  "schemaVersion": 1,
+  "id": "revamped_xp_bottle",
+  "version": "${version}",
+  "name": "Revamped XP Bottle",
+  "description": "Store up to 30 levels of XP in a bottle.",
+  "authors": ["Zazac1"],
+  "environment": "*",
+  "entrypoints": {
+    "main": ["com.zazac1.revampedxp.RevampedXpBottleMod"],
+    "modmenu": ["com.zazac1.revampedxp.client.ModMenuIntegration"]
+  },
+  "icon": "icon.png",
+  "contact": {
+    "homepage": "https://github.com/Zazac1/revamped_xp_bottle",
+    "sources": "https://github.com/Zazac1/revamped_xp_bottle",
+    "issues": "https://github.com/Zazac1/revamped_xp_bottle/issues"
+  },
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
 }
-
