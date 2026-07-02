@@ -7,7 +7,7 @@
   "authors": ["Zazac1"],
   "environment": "*",
   "entrypoints": {
-    "main": ["com.zazac1.bottledlevels.RevampedXpBottleMod"],
+    "main": ["com.zazac1.bottledlevels.BottledLevelsMod"],
     "modmenu": ["com.zazac1.bottledlevels.client.ModMenuIntegration"]
   },
   "icon": "icon.png",

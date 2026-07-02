@@ -60,7 +60,7 @@ public class XpBottleItem extends Item {
                 player.addExperience(stored);
                 stack.decrement(1);
 
-                ItemStack emptyBottle = new ItemStack(RevampedXpBottleMod.XP_BOTTLE);
+                ItemStack emptyBottle = new ItemStack(BottledLevelsMod.XP_BOTTLE);
                 setStored(emptyBottle, 0, 0);
                 if (!player.getInventory().insertStack(emptyBottle)) {
                     player.dropItem(emptyBottle, false);

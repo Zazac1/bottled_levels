@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
-public class RevampedXpBottleMod implements ModInitializer {
+public class BottledLevelsMod implements ModInitializer {
     public static final String MODID = "bottled_levels";
     public static final Identifier XP_BOTTLE_ID = Identifier.of(MODID, "xp_bottle");
     public static Item XP_BOTTLE;
