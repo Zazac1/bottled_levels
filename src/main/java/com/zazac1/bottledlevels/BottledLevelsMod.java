@@ -1,9 +1,11 @@
 package com.zazac1.bottledlevels;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.Registries;
@@ -28,10 +30,10 @@ public class BottledLevelsMod implements ModInitializer {
                 new Item.Settings()
                         .maxCount(maxCount)
                         .registryKey(itemKey)
-                        // icône par défaut = tier 0 (bouteille vide) pour les items sans données
                         .component(DataComponentTypes.CUSTOM_MODEL_DATA,
                                 new CustomModelDataComponent(List.of(0f), List.of(), List.of(), List.of()))
         ));
+
+        ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.add(XP_BOTTLE));
     }
 }
-
