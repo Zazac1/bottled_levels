@@ -6,13 +6,9 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
-
-import java.util.List;
 
 public class BottledLevelsMod implements ModInitializer {
     public static final String MODID = "bottled_levels";
@@ -21,14 +17,11 @@ public class BottledLevelsMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, XP_BOTTLE_ID);
-
         XP_BOTTLE = Registry.register(Registries.ITEM, XP_BOTTLE_ID, new XpBottleItem(
                 new Item.Settings()
                         .maxCount(64)
-                        .registryKey(itemKey)
                         .component(DataComponentTypes.CUSTOM_MODEL_DATA,
-                                new CustomModelDataComponent(List.of(0f), List.of(), List.of(), List.of()))
+                                new CustomModelDataComponent(0))
         ));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.add(XP_BOTTLE));

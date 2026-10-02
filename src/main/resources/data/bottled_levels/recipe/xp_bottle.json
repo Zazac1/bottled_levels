@@ -6,8 +6,8 @@
     " # "
   ],
   "key": {
-    "#": "minecraft:lapis_lazuli",
-    "u": "minecraft:glass_bottle"
+    "#": { "item": "minecraft:lapis_lazuli" },
+    "u": { "item": "minecraft:glass_bottle" }
   },
   "result": { "id": "bottled_levels:xp_bottle" }
 }

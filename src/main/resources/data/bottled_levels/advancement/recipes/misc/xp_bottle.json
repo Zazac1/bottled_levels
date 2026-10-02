@@ -1,4 +1,5 @@
 {
+  "parent": "minecraft:recipes/root",
   "criteria": {
     "has_glass_bottle": {
       "trigger": "minecraft:inventory_changed",
@@ -19,12 +20,19 @@
           }
         ]
       }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "bottled_levels:xp_bottle"
+      }
     }
   },
   "requirements": [
     [
       "has_glass_bottle",
-      "has_lapis_lazuli"
+      "has_lapis_lazuli",
+      "has_the_recipe"
     ]
   ],
   "rewards": {

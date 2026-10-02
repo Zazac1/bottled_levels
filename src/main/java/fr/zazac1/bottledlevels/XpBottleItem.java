@@ -3,12 +3,10 @@ package fr.zazac1.bottledlevels;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.CustomModelDataComponent;
 import net.minecraft.component.type.NbtComponent;
-import net.minecraft.component.type.TooltipDisplayComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.consume.UseAction;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.sound.SoundCategory;
@@ -17,11 +15,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.UseAction;
 import net.minecraft.world.World;
 import net.minecraft.server.world.ServerWorld;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class XpBottleItem extends Item {
     private static final String NBT_FORMAT = "BottledLevelsFormat";
@@ -38,21 +37,27 @@ public class XpBottleItem extends Item {
     }
 
     @Override
-    public ActionResult use(World world, PlayerEntity user, Hand hand) {
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stack = user.getStackInHand(hand);
-        if (user.getItemCooldownManager().isCoolingDown(stack)) {
+        if (user.getItemCooldownManager().isCoolingDown(this)) {
             if (!world.isClient()) user.sendMessage(Text.translatable("item.bottled_levels.xp_bottle.cooldown"), true);
-            return ActionResult.FAIL;
+            return TypedActionResult.fail(stack);
         }
         if (user.isSneaking()) {
-            if (world.isClient()) return ActionResult.SUCCESS;
-            return transfer(world, user, hand, true);
+            if (world.isClient()) return TypedActionResult.success(stack);
+            return result(transfer(world, user, hand, true), stack);
         }
 
-        if (readContents(stack).levels() == 0) return ActionResult.PASS;
+        if (readContents(stack).levels() == 0) return TypedActionResult.pass(stack);
         // Drinking is intentionally the only non-sneaking transfer path.
         user.setCurrentHand(hand);
-        return ActionResult.CONSUME;
+        return TypedActionResult.consume(stack);
+    }
+
+    private TypedActionResult<ItemStack> result(ActionResult result, ItemStack stack) {
+        if (result == ActionResult.FAIL) return TypedActionResult.fail(stack);
+        if (result == ActionResult.PASS) return TypedActionResult.pass(stack);
+        return TypedActionResult.consume(stack);
     }
 
     @Override
@@ -90,7 +95,7 @@ public class XpBottleItem extends Item {
 
     private ActionResult transfer(World world, PlayerEntity user, Hand hand, boolean depositing) {
         ItemStack stack = user.getStackInHand(hand);
-        if (user.getItemCooldownManager().isCoolingDown(stack)) {
+        if (user.getItemCooldownManager().isCoolingDown(this)) {
             user.sendMessage(Text.translatable("item.bottled_levels.xp_bottle.cooldown"), true);
             return ActionResult.FAIL;
         }
@@ -116,11 +121,11 @@ public class XpBottleItem extends Item {
         user.addExperienceLevels(transfer.playerLevelsAfter() - user.experienceLevel);
         user.experienceProgress = progress;
         if (config.cooldownSeconds > 0) {
-            user.getItemCooldownManager().set(stack, config.cooldownSeconds * 20);
+            user.getItemCooldownManager().set(this, config.cooldownSeconds * 20);
         }
 
-        if (depositing && config.damageOnDeposit && config.depositDamage > 0.0f && world instanceof ServerWorld serverWorld) {
-            user.damage(serverWorld, world.getDamageSources().generic(), config.depositDamage);
+        if (depositing && config.damageOnDeposit && config.depositDamage > 0.0f) {
+            user.damage(world.getDamageSources().generic(), config.depositDamage);
         }
         playTransferSound(world, user, depositing, transfer.storedLevelsAfter(), config.maxLevels);
         return ActionResult.CONSUME;
@@ -173,22 +178,26 @@ public class XpBottleItem extends Item {
         NbtComponent customData = stack.get(DataComponentTypes.CUSTOM_DATA);
         if (customData == null) return BottleContents.empty();
         NbtCompound nbt = customData.copyNbt();
-        if (nbt.getInt(NBT_FORMAT, 0) >= FORMAT_WHOLE_LEVELS) {
-            int levels = nbt.getInt(NBT_STORED_LEVELS, -1);
+        if (getInt(nbt, NBT_FORMAT, 0) >= FORMAT_WHOLE_LEVELS) {
+            int levels = getInt(nbt, NBT_STORED_LEVELS, -1);
             return levels >= 0 ? new BottleContents(levels, false) : BottleContents.ambiguous();
         }
         if (nbt.contains(LEGACY_STORED_LEVELS)) {
-            int legacyLevels = nbt.getInt(LEGACY_STORED_LEVELS, -1);
+            int legacyLevels = getInt(nbt, LEGACY_STORED_LEVELS, -1);
             return legacyLevels >= 0 ? new BottleContents(legacyLevels, false) : BottleContents.ambiguous();
         }
-        return nbt.getInt(LEGACY_STORED_XP, 0) > 0 ? BottleContents.ambiguous() : BottleContents.empty();
+        return getInt(nbt, LEGACY_STORED_XP, 0) > 0 ? BottleContents.ambiguous() : BottleContents.empty();
+    }
+
+    private int getInt(NbtCompound nbt, String key, int fallback) {
+        return nbt.contains(key) ? nbt.getInt(key) : fallback;
     }
 
     private void writeContents(ItemStack stack, int levels, int capacity) {
         if (levels == 0) {
             clearContents(stack);
             stack.set(DataComponentTypes.CUSTOM_MODEL_DATA,
-                    new CustomModelDataComponent(List.of(0f), List.of(), List.of(), List.of()));
+                    new CustomModelDataComponent(0));
             return;
         }
         NbtComponent customData = stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT);
@@ -201,7 +210,7 @@ public class XpBottleItem extends Item {
         // covers three levels (1-3, 4-6, ..., 28-30).
         int tier = Math.min(9, (int) (((long) levels * 9 + capacity - 1) / capacity));
         stack.set(DataComponentTypes.CUSTOM_MODEL_DATA,
-                new CustomModelDataComponent(List.of((float) tier), List.of(), List.of(), List.of()));
+                new CustomModelDataComponent(tier));
     }
 
     private void clearContents(ItemStack stack) {
@@ -221,14 +230,13 @@ public class XpBottleItem extends Item {
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, TooltipDisplayComponent displayComponent,
-                              Consumer<Text> tooltip, TooltipType type) {
+    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         BottleContents contents = readContents(stack);
         if (contents.ambiguousLegacy()) {
-            tooltip.accept(Text.translatable("item.bottled_levels.xp_bottle.legacy_ambiguous").formatted(Formatting.RED));
+            tooltip.add(Text.translatable("item.bottled_levels.xp_bottle.legacy_ambiguous").formatted(Formatting.RED));
             return;
         }
-        tooltip.accept(Text.translatable("item.bottled_levels.xp_bottle.levels", contents.levels())
+        tooltip.add(Text.translatable("item.bottled_levels.xp_bottle.levels", contents.levels())
                 .formatted(Formatting.GREEN));
     }
 
