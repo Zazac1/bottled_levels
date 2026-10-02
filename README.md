@@ -20,7 +20,7 @@ Build & Installation
 ```
 .\gradlew.bat build
 ```
-Place `build\libs\bottledlevels-1.0.1+1.21.11.jar` into your Fabric `mods` folder.
+Place `build\libs\bottledlevels-1.0.2+1.21.11.jar` into your Fabric `mods` folder.
 
 Dev launch:
 ```

@@ -71,7 +71,7 @@ tasks.named("test") {
 }
 
 // The remapped artifact is the file distributed to players. Keep the metadata
-// version independent so Fabric reports the requested mod version (1.0.1).
+// version independent so Fabric reports the requested mod version (1.0.2).
 tasks.named("remapJar") {
 	archiveVersion = "${project.mod_version}+${project.minecraft_version}"
 }
