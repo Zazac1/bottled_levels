@@ -2,5 +2,16 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "bottled_levels:item/xp_bottle_0"
-  }
+  },
+  "overrides": [
+    { "predicate": { "custom_model_data": 1 }, "model": "bottled_levels:item/xp_bottle_1" },
+    { "predicate": { "custom_model_data": 2 }, "model": "bottled_levels:item/xp_bottle_2" },
+    { "predicate": { "custom_model_data": 3 }, "model": "bottled_levels:item/xp_bottle_3" },
+    { "predicate": { "custom_model_data": 4 }, "model": "bottled_levels:item/xp_bottle_4" },
+    { "predicate": { "custom_model_data": 5 }, "model": "bottled_levels:item/xp_bottle_5" },
+    { "predicate": { "custom_model_data": 6 }, "model": "bottled_levels:item/xp_bottle_6" },
+    { "predicate": { "custom_model_data": 7 }, "model": "bottled_levels:item/xp_bottle_7" },
+    { "predicate": { "custom_model_data": 8 }, "model": "bottled_levels:item/xp_bottle_8" },
+    { "predicate": { "custom_model_data": 9 }, "model": "bottled_levels:item/xp_bottle_9" }
+  ]
 }

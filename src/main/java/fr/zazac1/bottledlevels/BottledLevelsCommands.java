@@ -5,8 +5,6 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.command.permission.Permission;
-import net.minecraft.command.permission.PermissionLevel;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
@@ -20,7 +18,7 @@ public final class BottledLevelsCommands {
     public static void register() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
                 literal("bottledlevels")
-                        .requires(source -> source.getPermissions().hasPermission(new Permission.Level(PermissionLevel.GAMEMASTERS)))
+                        .requires(source -> source.hasPermissionLevel(2))
                         .executes(context -> show(context.getSource()))
                         .then(literal("capacity").then(argument("levels", IntegerArgumentType.integer(
                                 WorldBottleConfig.MIN_CAPACITY, WorldBottleConfig.MAX_CAPACITY))

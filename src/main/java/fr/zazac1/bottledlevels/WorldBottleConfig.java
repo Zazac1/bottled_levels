@@ -3,6 +3,7 @@ package fr.zazac1.bottledlevels;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.WorldSavePath;
 
 import java.io.IOException;
@@ -72,8 +73,8 @@ public final class WorldBottleConfig {
     }
 
     private static void normalize(WorldBottleConfig config) {
-        config.maxLevels = Math.clamp(config.maxLevels, MIN_CAPACITY, MAX_CAPACITY);
-        config.depositDamage = Math.clamp(config.depositDamage, MIN_DEPOSIT_DAMAGE, MAX_DEPOSIT_DAMAGE);
-        config.cooldownSeconds = Math.clamp(config.cooldownSeconds, MIN_COOLDOWN_SECONDS, MAX_COOLDOWN_SECONDS);
+        config.maxLevels = MathHelper.clamp(config.maxLevels, MIN_CAPACITY, MAX_CAPACITY);
+        config.depositDamage = MathHelper.clamp(config.depositDamage, MIN_DEPOSIT_DAMAGE, MAX_DEPOSIT_DAMAGE);
+        config.cooldownSeconds = MathHelper.clamp(config.cooldownSeconds, MIN_COOLDOWN_SECONDS, MAX_COOLDOWN_SECONDS);
     }
 }

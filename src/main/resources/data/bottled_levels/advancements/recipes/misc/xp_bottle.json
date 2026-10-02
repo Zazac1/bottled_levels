@@ -1,11 +1,14 @@
 {
+  "parent": "minecraft:recipes/root",
   "criteria": {
     "has_glass_bottle": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": "minecraft:glass_bottle"
+            "items": [
+              "minecraft:glass_bottle"
+            ]
           }
         ]
       }
@@ -15,21 +18,31 @@
       "conditions": {
         "items": [
           {
-            "items": "minecraft:lapis_lazuli"
+            "items": [
+              "minecraft:lapis_lazuli"
+            ]
           }
         ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "bottled_levels:xp_bottle"
       }
     }
   },
   "requirements": [
     [
       "has_glass_bottle",
-      "has_lapis_lazuli"
+      "has_lapis_lazuli",
+      "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
       "bottled_levels:xp_bottle"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
