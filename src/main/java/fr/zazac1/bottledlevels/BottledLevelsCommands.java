@@ -5,13 +5,13 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.command.permission.Permission;
-import net.minecraft.command.permission.PermissionLevel;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.Text;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.permissions.Permission;
+import net.minecraft.server.permissions.PermissionLevel;
 
-import static net.minecraft.server.command.CommandManager.argument;
-import static net.minecraft.server.command.CommandManager.literal;
+import static net.minecraft.commands.Commands.argument;
+import static net.minecraft.commands.Commands.literal;
 
 public final class BottledLevelsCommands {
     private BottledLevelsCommands() {
@@ -20,7 +20,7 @@ public final class BottledLevelsCommands {
     public static void register() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> dispatcher.register(
                 literal("bottledlevels")
-                        .requires(source -> source.getPermissions().hasPermission(new Permission.Level(PermissionLevel.GAMEMASTERS)))
+                        .requires(source -> source.permissions().hasPermission(new Permission.HasCommandLevel(PermissionLevel.GAMEMASTERS)))
                         .executes(context -> show(context.getSource()))
                         .then(literal("capacity").then(argument("levels", IntegerArgumentType.integer(
                                 WorldBottleConfig.MIN_CAPACITY, WorldBottleConfig.MAX_CAPACITY))
@@ -37,43 +37,43 @@ public final class BottledLevelsCommands {
         ));
     }
 
-    private static int show(ServerCommandSource source) {
+    private static int show(CommandSourceStack source) {
         WorldBottleConfig config = WorldBottleConfig.get(source.getServer());
-        source.sendFeedback(() -> Text.literal("Bottled Levels — capacity: " + config.maxLevels
+        source.sendSuccess(() -> Component.literal("Bottled Levels — capacity: " + config.maxLevels
                 + ", deposit damage: " + (config.damageOnDeposit ? config.depositDamage : "off")
                 + ", cooldown: " + config.cooldownSeconds + "s"), false);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setCapacity(ServerCommandSource source, int levels) {
+    private static int setCapacity(CommandSourceStack source, int levels) {
         WorldBottleConfig config = WorldBottleConfig.get(source.getServer());
         config.maxLevels = levels;
         WorldBottleConfig.save(source.getServer());
-        source.sendFeedback(() -> Text.literal("Bottled Levels capacity set to " + levels + " levels."), true);
+        source.sendSuccess(() -> Component.literal("Bottled Levels capacity set to " + levels + " levels."), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setDamageEnabled(ServerCommandSource source, boolean enabled) {
+    private static int setDamageEnabled(CommandSourceStack source, boolean enabled) {
         WorldBottleConfig config = WorldBottleConfig.get(source.getServer());
         config.damageOnDeposit = enabled;
         WorldBottleConfig.save(source.getServer());
-        source.sendFeedback(() -> Text.literal("Bottled Levels deposit damage " + (enabled ? "enabled." : "disabled.")), true);
+        source.sendSuccess(() -> Component.literal("Bottled Levels deposit damage " + (enabled ? "enabled." : "disabled.")), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setDamageAmount(ServerCommandSource source, float amount) {
+    private static int setDamageAmount(CommandSourceStack source, float amount) {
         WorldBottleConfig config = WorldBottleConfig.get(source.getServer());
         config.depositDamage = amount;
         WorldBottleConfig.save(source.getServer());
-        source.sendFeedback(() -> Text.literal("Bottled Levels deposit damage set to " + amount + "."), true);
+        source.sendSuccess(() -> Component.literal("Bottled Levels deposit damage set to " + amount + "."), true);
         return Command.SINGLE_SUCCESS;
     }
 
-    private static int setCooldown(ServerCommandSource source, int seconds) {
+    private static int setCooldown(CommandSourceStack source, int seconds) {
         WorldBottleConfig config = WorldBottleConfig.get(source.getServer());
         config.cooldownSeconds = seconds;
         WorldBottleConfig.save(source.getServer());
-        source.sendFeedback(() -> Text.literal("Bottled Levels cooldown set to " + seconds + " seconds."), true);
+        source.sendSuccess(() -> Component.literal("Bottled Levels cooldown set to " + seconds + " seconds."), true);
         return Command.SINGLE_SUCCESS;
     }
 }

@@ -1,4 +1,4 @@
-# Modrinth release — Bottled Levels 1.0.3-1.21.11 (Fabric)
+# Modrinth release — Bottled Levels 1.0.3-26.2 (Fabric)
 
 ## Version type
 
@@ -6,11 +6,11 @@ Release
 
 ## Version number
 
-1.0.3-1.21.11 (Fabric)
+1.0.3-26.2 (Fabric)
 
 ## Version subtitle
 
-1.0.3 for Minecraft 1.21.11 (Fabric)
+1.0.3 for Minecraft 26.2 (Fabric)
 
 ## Loader
 
@@ -18,18 +18,18 @@ Fabric
 
 ## Game version
 
-1.21.11
+26.2
 
 ## Dependencies
 
 Required:
 
-- Fabric API `>= 0.141.4+1.21.11`
-- Fabric Loader `>= 0.19.3`
+- Fabric API `>= 0.161.0+26.2`
+- Fabric Loader `>= 0.19.5`
 
 ## File
 
-`build/libs/bottledlevels-1.0.3+1.21.11.jar`
+`build/libs/bottledlevels-1.0.3+26.2.jar`
 
 ## Version changelog
 

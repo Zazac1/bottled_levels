@@ -3,8 +3,7 @@ package fr.zazac1.bottledlevels;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.WorldSavePath;
-
+import net.minecraft.world.level.storage.LevelResource;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
@@ -68,7 +67,7 @@ public final class WorldBottleConfig {
     }
 
     private static Path file(MinecraftServer server) {
-        return server.getSavePath(WorldSavePath.ROOT).resolve("bottled_levels.json");
+        return server.getWorldPath(LevelResource.ROOT).resolve("bottled_levels.json");
     }
 
     private static void normalize(WorldBottleConfig config) {
