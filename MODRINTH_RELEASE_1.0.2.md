@@ -20,6 +20,13 @@ Fabric
 
 1.21.11
 
+## Dependencies
+
+Required:
+
+- Fabric API `>= 0.141.4+1.21.11`
+- Fabric Loader `>= 0.19.3`
+
 ## File
 
 `build/libs/bottledlevels-1.0.2+1.21.11.jar`
