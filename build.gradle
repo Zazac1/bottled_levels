@@ -69,7 +69,7 @@ tasks.named("test") {
 	useJUnitPlatform()
 }
 
-// Minecraft 26.2 is unobfuscated, so Loom no longer creates a remapJar task.
+// Minecraft 26.3 is unobfuscated, so Loom no longer creates a remapJar task.
 // Keep the platform suffix on the distributable jar while the metadata remains
 // the requested mod version (1.0.3).
 tasks.named("jar") {

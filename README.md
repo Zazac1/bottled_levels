@@ -1,7 +1,7 @@
 Bottled Levels
 ==============
 
-A Fabric mod for **Minecraft 26.2** that adds a refillable bottle able to store whole experience levels.
+A Fabric mod for **Minecraft 26.3** that adds a refillable bottle able to store whole experience levels.
 
 Features
 --------
@@ -20,7 +20,7 @@ Build & Installation
 ```
 .\gradlew.bat build
 ```
-Place `build\libs\bottledlevels-1.0.3+26.2.jar` into your Fabric `mods` folder.
+Place `build\libs\bottledlevels-1.0.3+26.3.jar` into your Fabric `mods` folder.
 
 Dev launch:
 ```
@@ -45,9 +45,9 @@ Compatibility
 -------------
 | Dependency     | Version         |
 |----------------|-----------------|
-| Minecraft      | 26.2            |
+| Minecraft      | 26.3            |
 | Fabric Loader  | 0.19.5          |
-| Fabric API     | 0.161.0+26.2    |
+| Fabric API     | 0.161.0+26.3    |
 
 License & Distribution
 ----------------------
