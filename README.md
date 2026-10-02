@@ -5,14 +5,14 @@ A Fabric mod for **Minecraft 1.21.11** that adds a refillable bottle able to sto
 
 Features
 --------
-- 🧪 Bottle with **7 visual stages** based on stored levels and the world capacity
+- 🧪 Bottle with **10 visual stages** based on stored levels and the world capacity
 - 📥 **Sneak + right-click** to store the maximum possible number of whole levels in one transfer
 - 🍶 **Drink** the bottle to retrieve every stored whole level
 - 📊 The player's experience-bar percentage is preserved during both transfers
 - 📦 Bottles at the same level are **stackable**
 - 🔄 Empty bottles remain reusable and stack correctly
 - 🎵 Sound effects on fill, drink, and when the bottle reaches its maximum
-- 🔨 **Craft** with 4× Lapis Lazuli around a Glass Bottle
+- 🔨 **Craft** with 4× Lapis Lazuli around a Glass Bottle; the recipe unlocks after obtaining either ingredient
 - ⚙️ World settings are managed by server commands
 
 Build & Installation
@@ -20,7 +20,7 @@ Build & Installation
 ```
 .\gradlew.bat build
 ```
-Place `build\libs\bottledlevels-1.0.2+1.21.11.jar` into your Fabric `mods` folder.
+Place `build\libs\bottledlevels-1.0.3+1.21.11.jar` into your Fabric `mods` folder.
 
 Dev launch:
 ```

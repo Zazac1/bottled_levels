@@ -13,7 +13,10 @@
       { "threshold": 3.0, "model": { "type": "minecraft:model", "model": "bottled_levels:item/xp_bottle_3" } },
       { "threshold": 4.0, "model": { "type": "minecraft:model", "model": "bottled_levels:item/xp_bottle_4" } },
       { "threshold": 5.0, "model": { "type": "minecraft:model", "model": "bottled_levels:item/xp_bottle_5" } },
-      { "threshold": 6.0, "model": { "type": "minecraft:model", "model": "bottled_levels:item/xp_bottle_6" } }
+      { "threshold": 6.0, "model": { "type": "minecraft:model", "model": "bottled_levels:item/xp_bottle_6" } },
+      { "threshold": 7.0, "model": { "type": "minecraft:model", "model": "bottled_levels:item/xp_bottle_7" } },
+      { "threshold": 8.0, "model": { "type": "minecraft:model", "model": "bottled_levels:item/xp_bottle_8" } },
+      { "threshold": 9.0, "model": { "type": "minecraft:model", "model": "bottled_levels:item/xp_bottle_9" } }
     ]
   }
 }

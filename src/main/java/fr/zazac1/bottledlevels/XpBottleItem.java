@@ -29,6 +29,9 @@ public class XpBottleItem extends Item {
     private static final String NBT_STORED_LEVELS = "StoredLevels";
     private static final String LEGACY_STORED_XP = "StoredXP";
     private static final String LEGACY_STORED_LEVELS = "LevelsAbsorbed";
+    // Matches the cadence used by Minecraft's Consumable component.
+    private static final int DRINK_SOUND_INTERVAL_TICKS = 4;
+    private static final int DRINK_SOUND_START_DELAY_TICKS = 7;
 
     public XpBottleItem(Settings settings) {
         super(settings);
@@ -60,6 +63,17 @@ public class XpBottleItem extends Item {
     @Override
     public int getMaxUseTime(ItemStack stack, LivingEntity user) {
         return 32;
+    }
+
+    @Override
+    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        int elapsedUseTicks = getMaxUseTime(stack, user) - remainingUseTicks;
+        if (!world.isClient()
+                && elapsedUseTicks > DRINK_SOUND_START_DELAY_TICKS
+                && remainingUseTicks % DRINK_SOUND_INTERVAL_TICKS == 0) {
+            world.playSound(null, user.getX(), user.getY(), user.getZ(),
+                    SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 0.5f, 0.9f);
+        }
     }
 
     @Override
@@ -151,8 +165,6 @@ public class XpBottleItem extends Item {
                     SoundCategory.PLAYERS, 0.5f, 1.0f);
         } else {
             world.playSound(null, player.getX(), player.getY(), player.getZ(),
-                    SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 1.0f, 1.0f);
-            world.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.PLAYERS, 0.8f, 1.0f);
         }
     }
@@ -184,7 +196,10 @@ public class XpBottleItem extends Item {
             nbt.putInt(NBT_FORMAT, FORMAT_WHOLE_LEVELS);
             nbt.putInt(NBT_STORED_LEVELS, levels);
         }));
-        int tier = levels >= capacity ? 6 : (int) ((long) levels * 6 / capacity);
+        // Empty bottles use texture 0. The nine filled textures scale with the
+        // configured capacity: at the default capacity of 30, each texture
+        // covers three levels (1-3, 4-6, ..., 28-30).
+        int tier = Math.min(9, (int) (((long) levels * 9 + capacity - 1) / capacity));
         stack.set(DataComponentTypes.CUSTOM_MODEL_DATA,
                 new CustomModelDataComponent(List.of((float) tier), List.of(), List.of(), List.of()));
     }
