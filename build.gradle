@@ -6,19 +6,28 @@ plugins {
 version = project.mod_version
 group = project.maven_group
 
+base {
+	archivesName = project.archive_base_name
+}
+
 repositories {
 	mavenCentral()
-	maven { url "https://maven.terraformersmc.com/releases" }
 }
 
 loom {
 	splitEnvironmentSourceSets()
 
 	mods {
-		"bottled_levels" {
+		"${project.mod_id}" {
 			sourceSet sourceSets.main
 			sourceSet sourceSets.client
 		}
+	}
+
+	// Explicit development run profiles so the launcher can start both sides.
+	runs {
+		client { runDir = 'run-client' }
+		server { runDir = 'run-server' }
 	}
 }
 
@@ -27,8 +36,8 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-	modLocalRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
-	modCompileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+	testImplementation "org.junit.jupiter:junit-jupiter:5.9.2"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.9.2"
 }
 
 processResources {
@@ -52,17 +61,25 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 jar {
-	def projectName = project.name
-	inputs.property "projectName", projectName
-
 	from("LICENSE") {
-		rename { "${it}_$projectName"}
+		rename { "${it}_${project.mod_id}" }
 	}
+}
+
+tasks.named("test") {
+	useJUnitPlatform()
+}
+
+// The remapped artifact is the file distributed to players. Keep the metadata
+// version independent so Fabric reports the requested mod version (1.0.1).
+tasks.named("remapJar") {
+	archiveVersion = "${project.mod_version}+${project.minecraft_version}"
 }
 
 publishing {
 	publications {
 		create("mavenJava", MavenPublication) {
+			artifactId = project.archive_base_name
 			from components.java
 		}
 	}

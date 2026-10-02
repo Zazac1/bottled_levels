@@ -3,12 +3,12 @@
   "id": "bottled_levels",
   "version": "${version}",
   "name": "Bottled Levels",
-  "description": "Store up to 30 levels of XP in a refillable bottle.",
+  "description": "Store and recover whole experience levels in a refillable bottle.",
   "authors": ["Zazac1"],
+  "license": "MIT",
   "environment": "*",
   "entrypoints": {
-    "main": ["com.zazac1.bottledlevels.BottledLevelsMod"],
-    "modmenu": ["com.zazac1.bottledlevels.client.ModMenuIntegration"]
+    "main": ["fr.zazac1.bottledlevels.BottledLevelsMod"]
   },
   "icon": "icon.png",
   "contact": {

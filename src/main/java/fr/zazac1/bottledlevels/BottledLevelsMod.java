@@ -1,4 +1,4 @@
-package com.zazac1.bottledlevels;
+package fr.zazac1.bottledlevels;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -21,19 +21,17 @@ public class BottledLevelsMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        ModConfig.load();
-
         RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, XP_BOTTLE_ID);
-        int maxCount = ModConfig.INSTANCE.stackable ? 64 : 1;
 
         XP_BOTTLE = Registry.register(Registries.ITEM, XP_BOTTLE_ID, new XpBottleItem(
                 new Item.Settings()
-                        .maxCount(maxCount)
+                        .maxCount(64)
                         .registryKey(itemKey)
                         .component(DataComponentTypes.CUSTOM_MODEL_DATA,
                                 new CustomModelDataComponent(List.of(0f), List.of(), List.of(), List.of()))
         ));
 
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(entries -> entries.add(XP_BOTTLE));
+        BottledLevelsCommands.register();
     }
 }

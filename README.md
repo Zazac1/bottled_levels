@@ -1,30 +1,45 @@
 Bottled Levels
 ==============
 
-A Fabric mod for **Minecraft 1.21.11** that adds a refillable XP bottle able to store up to 30 levels.
+A Fabric mod for **Minecraft 1.21.11** that adds a refillable bottle able to store whole experience levels.
 
 Features
 --------
-- 🧪 Bottle with **7 visual stages** based on fill level (0 → 30 levels)
-- 📥 **Hold Shift + right-click** to fill the bottle one level at a time
-- 🍶 **Drink** the bottle to retrieve your stored XP
+- 🧪 Bottle with **7 visual stages** based on stored levels and the world capacity
+- 📥 **Sneak + right-click** to store the maximum possible number of whole levels in one transfer
+- 🍶 **Drink** the bottle to retrieve every stored whole level
+- 📊 The player's experience-bar percentage is preserved during both transfers
 - 📦 Bottles at the same level are **stackable**
-- 🔄 An empty bottle is returned to your inventory after use
+- 🔄 Empty bottles remain reusable and stack correctly
 - 🎵 Sound effects on fill, drink, and when the bottle reaches its maximum
 - 🔨 **Craft** with 4× Lapis Lazuli around a Glass Bottle
-- ⚙️ **ModMenu config** — drink mode, max levels, stackable on/off
+- ⚙️ World settings are managed by server commands
 
 Build & Installation
 --------------------
 ```
 .\gradlew.bat build
 ```
-Place the JAR from `build\libs\` into your Fabric `mods` folder.
+Place `build\libs\bottledlevels-1.0.1+1.21.11.jar` into your Fabric `mods` folder.
 
 Dev launch:
 ```
 .\gradlew.bat runClient
 ```
+
+World configuration
+-------------------
+Operators can configure each world/server independently:
+
+```
+/bottledlevels
+/bottledlevels capacity <levels>
+/bottledlevels damage <true|false>
+/bottledlevels damage amount <health-points>
+/bottledlevels cooldown <seconds>
+```
+
+The commands require operator permission in both single-player and multiplayer. The configuration is saved as `bottled_levels.json` alongside that world's `level.dat`. Cooldown defaults to 5 seconds; set it to `0` to disable it.
 
 Compatibility
 -------------
@@ -33,7 +48,6 @@ Compatibility
 | Minecraft      | 1.21.11         |
 | Fabric Loader  | 0.19.3          |
 | Fabric API     | 0.141.4+1.21.11 |
-| ModMenu        | 17.0.0 (opt.)   |
 
 License & Distribution
 ----------------------

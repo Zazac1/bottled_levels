@@ -1,3 +1,8 @@
 {
-  "item.bottled_levels.xp_bottle": "Experience Bottle"
+  "item.bottled_levels.xp_bottle": "Bottled Levels",
+  "item.bottled_levels.xp_bottle.levels": "%s levels",
+  "item.bottled_levels.xp_bottle.inventory_full": "No inventory space to separate this bottle.",
+  "item.bottled_levels.xp_bottle.cooldown": "Bottled Levels is cooling down.",
+  "item.bottled_levels.xp_bottle.transfer_refused": "This level transfer was refused.",
+  "item.bottled_levels.xp_bottle.legacy_ambiguous": "Legacy XP-only bottle: its level content is ambiguous and cannot be transferred."
 }
