@@ -27,6 +27,8 @@ dependencies {
     // compile/runtime-only and is never embedded in the released mod JAR.
     compileOnly files('libs/minecraft-1.21.1-neoforge-dev.jar')
     runtimeOnly files('libs/minecraft-1.21.1-neoforge-dev.jar')
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.9.2'
 }
 
 processResources {
@@ -56,6 +58,10 @@ tasks.withType(JavaExec).configureEach {
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
     withSourcesJar()
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }
 
 jar {
