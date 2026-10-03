@@ -4,6 +4,7 @@
 build/
 build-neoforge/
 build-compile*.log
+build-clean*.log
 out/
 classes/
 
