@@ -2,6 +2,8 @@
 
 .gradle/
 build/
+build-neoforge/
+build-compile*.log
 out/
 classes/
 
@@ -33,6 +35,7 @@ bin/
 run/
 run-client/
 run-server/
+runs/
 
 # java
 

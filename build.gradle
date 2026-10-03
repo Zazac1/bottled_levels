@@ -1,89 +1,65 @@
 plugins {
-	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
-	id 'maven-publish'
+    id 'java-library'
+    id 'net.neoforged.gradle.userdev' version '7.1.38'
+    id 'maven-publish'
 }
 
 version = project.mod_version
 group = project.maven_group
+base { archivesName = 'bottledlevels-neoforge' }
 
-base {
-	archivesName = project.archive_base_name
-}
+repositories { mavenCentral() }
 
-repositories {
-	mavenCentral()
-}
-
-loom {
-	splitEnvironmentSourceSets()
-
-	mods {
-		"${project.mod_id}" {
-			sourceSet sourceSets.main
-			sourceSet sourceSets.client
-		}
-	}
-
-	// Explicit development run profiles so the launcher can start both sides.
-	runs {
-		client { runDir = 'run-client' }
-		server { runDir = 'run-server' }
-	}
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
+    }
+    client { }
+    server { argument '--nogui' }
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
-	testImplementation "org.junit.jupiter:junit-jupiter:5.9.2"
-	testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.9.2"
+    implementation "net.neoforged:neoforge:${project.neo_version}"
+    // Keeps the 1.21.1 development runtime complete when NeoGradle's local
+    // transformed-game cache has been cleared or partially generated. This is
+    // compile/runtime-only and is never embedded in the released mod JAR.
+    compileOnly files('libs/minecraft-1.21.1-neoforge-dev.jar')
+    runtimeOnly files('libs/minecraft-1.21.1-neoforge-dev.jar')
 }
 
 processResources {
-	def version = project.version
-	inputs.property "version", version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": version
-	}
-}
-
-java {
-	withSourcesJar()
-
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
+    inputs.property 'version', project.version
+    filesMatching('META-INF/neoforge.mods.toml') {
+        expand 'version': project.version,
+                'minecraft_version_range': project.minecraft_version_range,
+                'neo_version': project.neo_version,
+                'loader_version_range': project.loader_version_range
+    }
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 21
+    options.release = 21
+    options.encoding = 'UTF-8'
+}
+
+// NeoGradle gives the dedicated server a closed input stream by default.
+// Keep the launcher-managed Gradle process interactive so `stop`, commands,
+// and slash commands typed in the launcher reach the server console.
+tasks.withType(JavaExec).configureEach {
+    if (name == 'runServer') {
+        standardInput = System.in
+    }
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+    withSourcesJar()
 }
 
 jar {
-	from("LICENSE") {
-		rename { "${it}_${project.mod_id}" }
-	}
+    from('LICENSE') { rename { "${it}_${project.mod_id}" } }
 }
 
-tasks.named("test") {
-	useJUnitPlatform()
-}
-
-// The remapped artifact is the file distributed to players. Keep the metadata
-// version independent so Fabric reports the requested mod version (1.0.2).
-tasks.named("remapJar") {
-	archiveVersion = "${project.mod_version}+${project.minecraft_version}"
-}
-
-publishing {
-	publications {
-		create("mavenJava", MavenPublication) {
-			artifactId = project.archive_base_name
-			from components.java
-		}
-	}
-
-	repositories {
-	}
-}
+publishing { publications { mavenJava(MavenPublication) { artifact jar } } }

@@ -1,13 +1,8 @@
 pluginManagement {
-	repositories {
-		maven {
-			name = 'Fabric'
-			url = 'https://maven.fabricmc.net/'
-		}
-		mavenCentral()
-		gradlePluginPortal()
-	}
+    repositories {
+        gradlePluginPortal()
+        maven { url = 'https://maven.neoforged.net/releases' }
+    }
 }
 
-// Should match your modid
-rootProject.name = 'bottledlevels'
+rootProject.name = 'bottledlevels-neoforge-1.21.1'

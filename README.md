@@ -1,7 +1,7 @@
 Bottled Levels
 ==============
 
-A Fabric mod for **Minecraft 1.21.1** that adds a refillable bottle able to store whole experience levels.
+A NeoForge mod for **Minecraft 1.21.1** that adds a refillable bottle able to store whole experience levels.
 
 Features
 --------
@@ -20,7 +20,7 @@ Build & Installation
 ```
 .\gradlew.bat build
 ```
-Place `build\libs\bottledlevels-1.0.3+1.21.1.jar` into your Fabric `mods` folder.
+Place `build\libs\bottledlevels-neoforge-1.0.3+1.21.1.jar` into your NeoForge `mods` folder.
 
 Dev launch:
 ```
@@ -46,8 +46,7 @@ Compatibility
 | Dependency     | Version         |
 |----------------|-----------------|
 | Minecraft      | 1.21.1          |
-| Fabric Loader  | 0.19.5          |
-| Fabric API     | 0.116.17+1.21.1 |
+| NeoForge       | 21.1.235        |
 
 License & Distribution
 ----------------------

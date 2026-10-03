@@ -1,24 +1,22 @@
 package fr.zazac1.bottledlevels;
 
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.CustomModelDataComponent;
-import net.minecraft.component.type.NbtComponent;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
-import net.minecraft.world.World;
-import net.minecraft.server.world.ServerWorld;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.CustomModelData;
+import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -32,106 +30,106 @@ public class XpBottleItem extends Item {
     private static final int DRINK_SOUND_INTERVAL_TICKS = 4;
     private static final int DRINK_SOUND_START_DELAY_TICKS = 7;
 
-    public XpBottleItem(Settings settings) {
+    public XpBottleItem(Properties settings) {
         super(settings);
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (user.getItemCooldownManager().isCoolingDown(this)) {
-            if (!world.isClient()) user.sendMessage(Text.translatable("item.bottled_levels.xp_bottle.cooldown"), true);
-            return TypedActionResult.fail(stack);
+    public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+        ItemStack stack = user.getItemInHand(hand);
+        if (user.getCooldowns().isOnCooldown(this)) {
+            if (!world.isClientSide()) user.displayClientMessage(Component.translatable("item.bottled_levels.xp_bottle.cooldown"), true);
+            return InteractionResultHolder.fail(stack);
         }
-        if (user.isSneaking()) {
-            if (world.isClient()) return TypedActionResult.success(stack);
+        if (user.isShiftKeyDown()) {
+            if (world.isClientSide()) return InteractionResultHolder.sidedSuccess(stack, true);
             return result(transfer(world, user, hand, true), stack);
         }
 
-        if (readContents(stack).levels() == 0) return TypedActionResult.pass(stack);
+        if (readContents(stack).levels() == 0) return InteractionResultHolder.pass(stack);
         // Drinking is intentionally the only non-sneaking transfer path.
-        user.setCurrentHand(hand);
-        return TypedActionResult.consume(stack);
+        user.startUsingItem(hand);
+        return InteractionResultHolder.consume(stack);
     }
 
-    private TypedActionResult<ItemStack> result(ActionResult result, ItemStack stack) {
-        if (result == ActionResult.FAIL) return TypedActionResult.fail(stack);
-        if (result == ActionResult.PASS) return TypedActionResult.pass(stack);
-        return TypedActionResult.consume(stack);
-    }
-
-    @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.DRINK;
+    private InteractionResultHolder<ItemStack> result(InteractionResult result, ItemStack stack) {
+        if (result == InteractionResult.FAIL) return InteractionResultHolder.fail(stack);
+        if (result == InteractionResult.PASS) return InteractionResultHolder.pass(stack);
+        return InteractionResultHolder.consume(stack);
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
+    public net.minecraft.world.item.UseAnim getUseAnimation(ItemStack stack) {
+        return net.minecraft.world.item.UseAnim.DRINK;
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity user) {
         return 32;
     }
 
     @Override
-    public void usageTick(World world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
-        int elapsedUseTicks = getMaxUseTime(stack, user) - remainingUseTicks;
-        if (!world.isClient()
+    public void onUseTick(Level world, LivingEntity user, ItemStack stack, int remainingUseTicks) {
+        int elapsedUseTicks = getUseDuration(stack, user) - remainingUseTicks;
+        if (!world.isClientSide()
                 && elapsedUseTicks > DRINK_SOUND_START_DELAY_TICKS
                 && remainingUseTicks % DRINK_SOUND_INTERVAL_TICKS == 0) {
             world.playSound(null, user.getX(), user.getY(), user.getZ(),
-                    SoundEvents.ENTITY_GENERIC_DRINK, SoundCategory.PLAYERS, 0.5f, 0.9f);
+                    SoundEvents.GENERIC_DRINK, SoundSource.PLAYERS, 0.5f, 0.9f);
         }
     }
 
     @Override
-    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        if (!world.isClient() && user instanceof PlayerEntity player) {
-            transfer(world, player, player.getActiveHand(), false);
+    public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
+        if (!world.isClientSide() && user instanceof Player player) {
+            transfer(world, player, player.getUsedItemHand(), false);
         }
         return playerStack(user, stack);
     }
 
     private ItemStack playerStack(LivingEntity user, ItemStack fallback) {
-        return user instanceof PlayerEntity player ? player.getStackInHand(player.getActiveHand()) : fallback;
+        return user instanceof Player player ? player.getItemInHand(player.getUsedItemHand()) : fallback;
     }
 
-    private ActionResult transfer(World world, PlayerEntity user, Hand hand, boolean depositing) {
-        ItemStack stack = user.getStackInHand(hand);
-        if (user.getItemCooldownManager().isCoolingDown(this)) {
-            user.sendMessage(Text.translatable("item.bottled_levels.xp_bottle.cooldown"), true);
-            return ActionResult.FAIL;
+    private InteractionResult transfer(Level world, Player user, InteractionHand hand, boolean depositing) {
+        ItemStack stack = user.getItemInHand(hand);
+        if (user.getCooldowns().isOnCooldown(this)) {
+            user.displayClientMessage(Component.translatable("item.bottled_levels.xp_bottle.cooldown"), true);
+            return InteractionResult.FAIL;
         }
         BottleContents contents = readContents(stack);
         if (contents.ambiguousLegacy()) {
-            user.sendMessage(Text.translatable("item.bottled_levels.xp_bottle.legacy_ambiguous"), true);
-            return ActionResult.FAIL;
+            user.displayClientMessage(Component.translatable("item.bottled_levels.xp_bottle.legacy_ambiguous"), true);
+            return InteractionResult.FAIL;
         }
 
         WorldBottleConfig config = WorldBottleConfig.get(world.getServer());
         LevelTransferService.Transfer transfer = depositing
                 ? LevelTransferService.deposit(user.experienceLevel, contents.levels(), config.maxLevels)
                 : LevelTransferService.withdraw(user.experienceLevel, contents.levels());
-        if (!transfer.valid()) return ActionResult.FAIL;
-        if (!transfer.changed()) return ActionResult.CONSUME;
+        if (!transfer.valid()) return InteractionResult.FAIL;
+        if (!transfer.changed()) return InteractionResult.CONSUME;
 
         if (!applyToOneBottle(user, hand, stack, transfer.storedLevelsAfter(), config.maxLevels)) {
-            user.sendMessage(Text.translatable("item.bottled_levels.xp_bottle.inventory_full"), true);
-            return ActionResult.FAIL;
+            user.displayClientMessage(Component.translatable("item.bottled_levels.xp_bottle.inventory_full"), true);
+            return InteractionResult.FAIL;
         }
 
         float progress = user.experienceProgress;
-        user.addExperienceLevels(transfer.playerLevelsAfter() - user.experienceLevel);
+        user.giveExperienceLevels(transfer.playerLevelsAfter() - user.experienceLevel);
         user.experienceProgress = progress;
         if (config.cooldownSeconds > 0) {
-            user.getItemCooldownManager().set(this, config.cooldownSeconds * 20);
+            user.getCooldowns().addCooldown(this, config.cooldownSeconds * 20);
         }
 
         if (depositing && config.damageOnDeposit && config.depositDamage > 0.0f) {
-            user.damage(world.getDamageSources().generic(), config.depositDamage);
+            user.hurt(world.damageSources().generic(), config.depositDamage);
         }
         playTransferSound(world, user, depositing, transfer.storedLevelsAfter(), config.maxLevels);
-        return ActionResult.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
-    private boolean applyToOneBottle(PlayerEntity player, Hand hand, ItemStack stack, int storedLevels, int capacity) {
+    private boolean applyToOneBottle(Player player, InteractionHand hand, ItemStack stack, int storedLevels, int capacity) {
         if (stack.getCount() == 1) {
             writeContents(stack, storedLevels, capacity);
             return true;
@@ -144,40 +142,40 @@ public class XpBottleItem extends Item {
         writeContents(changedBottle, storedLevels, capacity);
         if (!canStoreChangedBottle(player, stack, changedBottle)) return false;
 
-        stack.decrement(1);
-        if (player.getInventory().insertStack(changedBottle)) return true;
+        stack.shrink(1);
+        if (player.getInventory().add(changedBottle)) return true;
 
         // A failed insertion cannot consume either XP or an item.
-        stack.increment(1);
+        stack.grow(1);
         return false;
     }
 
-    private boolean canStoreChangedBottle(PlayerEntity player, ItemStack original, ItemStack changedBottle) {
-        for (int slot = 0; slot < player.getInventory().size(); slot++) {
-            ItemStack candidate = player.getInventory().getStack(slot);
+    private boolean canStoreChangedBottle(Player player, ItemStack original, ItemStack changedBottle) {
+        for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
+            ItemStack candidate = player.getInventory().getItem(slot);
             if (candidate == original) continue;
             if (candidate.isEmpty()) return true;
-            if (ItemStack.areItemsAndComponentsEqual(candidate, changedBottle)
-                    && candidate.getCount() <= candidate.getMaxCount() - changedBottle.getCount()) return true;
+            if (ItemStack.isSameItemSameComponents(candidate, changedBottle)
+                    && candidate.getCount() <= candidate.getMaxStackSize() - changedBottle.getCount()) return true;
         }
         return false;
     }
 
-    private void playTransferSound(World world, PlayerEntity player, boolean depositing, int storedAfter, int capacity) {
+    private void playTransferSound(Level world, Player player, boolean depositing, int storedAfter, int capacity) {
         if (depositing) {
             world.playSound(null, player.getX(), player.getY(), player.getZ(),
-                    storedAfter >= capacity ? SoundEvents.ENTITY_PLAYER_LEVELUP : SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP,
-                    SoundCategory.PLAYERS, 0.5f, 1.0f);
+                    storedAfter >= capacity ? SoundEvents.PLAYER_LEVELUP : SoundEvents.EXPERIENCE_ORB_PICKUP,
+                    SoundSource.PLAYERS, 0.5f, 1.0f);
         } else {
             world.playSound(null, player.getX(), player.getY(), player.getZ(),
-                    SoundEvents.ITEM_BOTTLE_EMPTY, SoundCategory.PLAYERS, 0.8f, 1.0f);
+                    SoundEvents.BOTTLE_EMPTY, SoundSource.PLAYERS, 0.8f, 1.0f);
         }
     }
 
     private BottleContents readContents(ItemStack stack) {
-        NbtComponent customData = stack.get(DataComponentTypes.CUSTOM_DATA);
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
         if (customData == null) return BottleContents.empty();
-        NbtCompound nbt = customData.copyNbt();
+        CompoundTag nbt = customData.copyTag();
         if (getInt(nbt, NBT_FORMAT, 0) >= FORMAT_WHOLE_LEVELS) {
             int levels = getInt(nbt, NBT_STORED_LEVELS, -1);
             return levels >= 0 ? new BottleContents(levels, false) : BottleContents.ambiguous();
@@ -189,19 +187,18 @@ public class XpBottleItem extends Item {
         return getInt(nbt, LEGACY_STORED_XP, 0) > 0 ? BottleContents.ambiguous() : BottleContents.empty();
     }
 
-    private int getInt(NbtCompound nbt, String key, int fallback) {
+    private int getInt(CompoundTag nbt, String key, int fallback) {
         return nbt.contains(key) ? nbt.getInt(key) : fallback;
     }
 
     private void writeContents(ItemStack stack, int levels, int capacity) {
         if (levels == 0) {
             clearContents(stack);
-            stack.set(DataComponentTypes.CUSTOM_MODEL_DATA,
-                    new CustomModelDataComponent(0));
+            stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(0));
             return;
         }
-        NbtComponent customData = stack.getOrDefault(DataComponentTypes.CUSTOM_DATA, NbtComponent.DEFAULT);
-        stack.set(DataComponentTypes.CUSTOM_DATA, customData.apply(nbt -> {
+        CustomData customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        stack.set(DataComponents.CUSTOM_DATA, customData.update(nbt -> {
             nbt.putInt(NBT_FORMAT, FORMAT_WHOLE_LEVELS);
             nbt.putInt(NBT_STORED_LEVELS, levels);
         }));
@@ -209,35 +206,33 @@ public class XpBottleItem extends Item {
         // configured capacity: at the default capacity of 30, each texture
         // covers three levels (1-3, 4-6, ..., 28-30).
         int tier = Math.min(9, (int) (((long) levels * 9 + capacity - 1) / capacity));
-        stack.set(DataComponentTypes.CUSTOM_MODEL_DATA,
-                new CustomModelDataComponent(tier));
+        stack.set(DataComponents.CUSTOM_MODEL_DATA, new CustomModelData(tier));
     }
 
     private void clearContents(ItemStack stack) {
-        NbtComponent customData = stack.get(DataComponentTypes.CUSTOM_DATA);
+        CustomData customData = stack.get(DataComponents.CUSTOM_DATA);
         if (customData == null) return;
 
-        NbtCompound nbt = customData.copyNbt();
+        CompoundTag nbt = customData.copyTag();
         nbt.remove(NBT_FORMAT);
         nbt.remove(NBT_STORED_LEVELS);
         nbt.remove(LEGACY_STORED_XP);
         nbt.remove(LEGACY_STORED_LEVELS);
         if (nbt.isEmpty()) {
-            stack.remove(DataComponentTypes.CUSTOM_DATA);
+            stack.remove(DataComponents.CUSTOM_DATA);
         } else {
-            stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
+            stack.set(DataComponents.CUSTOM_DATA, CustomData.of(nbt));
         }
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, List<Component> tooltip, TooltipFlag type) {
         BottleContents contents = readContents(stack);
         if (contents.ambiguousLegacy()) {
-            tooltip.add(Text.translatable("item.bottled_levels.xp_bottle.legacy_ambiguous").formatted(Formatting.RED));
+            tooltip.add(Component.translatable("item.bottled_levels.xp_bottle.legacy_ambiguous").withStyle(ChatFormatting.RED));
             return;
         }
-        tooltip.add(Text.translatable("item.bottled_levels.xp_bottle.levels", contents.levels())
-                .formatted(Formatting.GREEN));
+        tooltip.add(Component.translatable("item.bottled_levels.xp_bottle.levels", contents.levels()).withStyle(ChatFormatting.GREEN));
     }
 
     private record BottleContents(int levels, boolean ambiguousLegacy) {

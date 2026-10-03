@@ -1,0 +1,25 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="MIT"
+
+[[mods]]
+modId="bottled_levels"
+version="${version}"
+displayName="Bottled Levels"
+authors="Zazac1"
+description='''Store and recover whole experience levels in a refillable bottle.'''
+logoFile="icon.png"
+
+[[dependencies.bottled_levels]]
+modId="neoforge"
+type="required"
+versionRange="[${neo_version},)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.bottled_levels]]
+modId="minecraft"
+type="required"
+versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
